@@ -76,12 +76,50 @@ public class SoapClientDemoApplication {
                                         }});
                                     }}),
                             message -> {
+                                //dynamicaUsernameResolvingClientInterceptor.username.set("test");
+                                log.info("");
+
+                            }
+                    );
+            log.info("RESPONSE 1 RECEIVED: {}", response.getStatus());
+
+            GetStatusResponse response2 =
+                    (GetStatusResponse) webServiceTemplate.marshalSendAndReceive("http://localhost:8080/service/soap",
+                            new JAXBElement<>(
+                                    new QName("http://schema.soapdemo.soap.psc.org", "getStatusRequest", "psc"),
+                                    GetStatusRequest.class,
+                                    new GetStatusRequest() {{
+                                        getKeyValue().add(new KeyValue() {{
+                                            setKey("prop1");
+                                            setValue("testValue");
+                                        }});
+                                    }}),
+                            message -> {
                                 dynamicaUsernameResolvingClientInterceptor.username.set("test");
                                 log.info("");
 
                             }
                     );
-            log.info("RESPONSE RECEIVED: {}", response.getStatus());
+            log.info("RESPONSE 2 RECEIVED: {}", response2.getStatus());
+
+            GetStatusResponse response3 =
+                    (GetStatusResponse) webServiceTemplate.marshalSendAndReceive("http://localhost:8080/service/soap",
+                            new JAXBElement<>(
+                                    new QName("http://schema.soapdemo.soap.psc.org", "getStatusRequest", "psc"),
+                                    GetStatusRequest.class,
+                                    new GetStatusRequest() {{
+                                        getKeyValue().add(new KeyValue() {{
+                                            setKey("prop1");
+                                            setValue("testValue");
+                                        }});
+                                    }}),
+                            message -> {
+                                dynamicaUsernameResolvingClientInterceptor.username.set("test2");
+                                log.info("");
+
+                            }
+                    );
+            log.info("RESPONSE 3 RECEIVED: {}", response3.getStatus());
         };
     }
 
